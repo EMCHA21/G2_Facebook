@@ -13,6 +13,8 @@ class PostController extends Controller
     public function index()
     {
         //
+        $data = Post::list();
+        return response()->json($data);
     }
 
     /**

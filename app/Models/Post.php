@@ -15,4 +15,12 @@ class Post extends Model
         'auth_id',
         'tags',
     ];
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public static function list(){
+        return Post::all();
+    }
 }
