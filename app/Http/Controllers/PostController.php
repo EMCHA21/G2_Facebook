@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Exception;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -12,9 +14,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
-        $data = Post::list();
-        return response()->json($data);
+        $post = Post::all();
+        $post = PostResource::collection($post);
+        return response()->json(['success'=>true,'data'=>$post]);
     }
 
     /**
@@ -22,7 +24,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+      
     }
 
     /**
@@ -30,15 +32,26 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = Post::create([
+            'title'=>request('title'),
+            'content'=>request('content'),
+            'auth_id'=>request('auth_id'),
+            'tags'=>request('tags')
+        ]);
+        return response()->json(['success'=>true,'data'=>$post]);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Post $post, string $id)
     {
-        //
+        try{
+            $posts = Post::find($id);
+            return response(["data"=>$posts,"message"=>"Post has been show successfully","status"=>200]);
+        }catch(Exception $error){
+            return response(["data"=>$posts,"message"=>"Post is not find, It was deleted","error"=>$error],500);
+        }
     }
 
     /**
@@ -54,14 +67,32 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $id = $request->id;
+        $title = $request->title;
+        $content = $request->content;
+        $auth_id = $request->auth_id;
+        $tags = $request->tags;
+        
+        $post = Post::where('id',$id)->first();
+        try{
+            $post-> updatePost($id, $title, $content,$auth_id,$tags);
+            return response()->json(["data" => $post,"message"=>"update successfully the post"],200);
+        }catch(Exception $error){
+            return response()->json(["data" => $post,"message"=>"failed to update this post"],500);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Request $request,Post $post)
     {
-        //
+        $id=$request->id;
+        try{
+            $post->deletePost($id);
+            return response()->json(["data" => $post,"message"=>"succfully to delete the post"],200);
+        }catch(Exception $erorr){
+            return response()->json(["data" => $post,"message"=>"failed to delete this post"],500);
+        }
     }
 }
