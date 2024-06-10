@@ -38,6 +38,6 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(20),
         ]);
         $user->syncRoles(["User"]);
-        $user->syncPermissions(["view_users","view_roles", "view_permissions"]);
+        $user->syncPermissions(["view_users", "view_roles", "view_permissions"]);
     }
 }
