@@ -19,9 +19,10 @@ use Illuminate\Support\Facades\Route;
 Route::post("/register", [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/logout',[UserController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/profile/change-password', [UserController::class, 'reset_Password'])->middleware('auth:sanctum');
 
 Route::get("/user/list", [UserController::class, 'index']);
 Route::get("/user/show/{id}", [UserController::class, 'show']);
 Route::put("/user/update/{id}", [UserController::class, 'update']);
+Route::post("/user/update-profile/{id}", [UserController::class, 'uploadProfile']);
