@@ -136,7 +136,6 @@ class UserController extends Controller
         $ext = $img->getClientOriginalExtension();
         $imageName = time() . '.' . $ext;
         $img->move(public_path() . '/uploads/', $imageName);
-
         try {
             $user = User::find($id);
             $user->update([
@@ -155,17 +154,18 @@ class UserController extends Controller
         }
     }
 
-    public function destroy($id){
+    public function destroy($id)
+    {
         User::destroy($id);
         try {
             return response()->json([
-               'success' => true,
-               'message' => 'Success to delete user'
+                'success' => true,
+                'message' => 'Success to delete user'
             ], 200);
         } catch (\Exception $e) {
             return response()->json([
-               'success' => false,
-               'message' => $e->getMessage()
+                'success' => false,
+                'message' => $e->getMessage()
             ], 404);
         }
     }

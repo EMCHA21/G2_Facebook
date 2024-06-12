@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
@@ -16,8 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/profile/change-password', [UserController::class, 'reset_Password'])->middleware('auth:sanctum');
-
 Route::prefix('/user')->group(function () {
     Route::post("/register", [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
@@ -25,11 +24,15 @@ Route::prefix('/user')->group(function () {
     Route::get("/list", [UserController::class, 'index']);
     Route::get("/show/{id}", [UserController::class, 'show']);
     Route::put("/update/{id}", [UserController::class, 'update']);
-    Route::put("/update/profile/{id}", [UserController::class, 'uploadProfile']);
+    Route::post("/update/profile/{id}", [UserController::class, 'uploadProfile']);
     Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::delete("/delete/{id}", [UserController::class, 'destroy']);
 });
 
-// Route::prefix('prefix')->group(function () {
-//     // Define routes here
-// });
+Route::prefix('/post')->group(function () {
+    Route::get("/list", [PostController::class, 'index']);
+    Route::post("/create", [PostController::class, 'store']);
+    Route::get("/show/{id}", [PostController::class, 'show']);
+    Route::put("/update/{id}", [PostController::class, 'update']);
+    Route::delete("/delete/{id}", [PostController::class, 'destroy']);
+});
