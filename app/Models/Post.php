@@ -12,6 +12,7 @@ class Post extends Model
 
     protected $fillable = [
         'title',
+        'img',
         'content',
         'auth_id',
         'tags',
@@ -24,9 +25,10 @@ class Post extends Model
     public static function list(){
         return Post::all();
     }
-    function updatePost($id, $title, $content,$auth_id,$tags){
+    function updatePost($id, $title,$img, $content,$auth_id,$tags){
         $post = Post::where('id',$id)->first();
         $post->title = $title;
+        $post->img = $img;
         $post->content = $content;
         $post->auth_id = $auth_id;
         $post->tags = $tags;
