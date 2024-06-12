@@ -64,7 +64,19 @@ class UserController extends Controller
     }
     public function index()
     {
-        return User::list();
+        $data = User::list();
+        try {
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'message' => 'Success to get all user'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
 
     public function show($id)
@@ -111,7 +123,7 @@ class UserController extends Controller
     public function uploadProfile(Request $request, $id)
     {
         $validateUser = Validator::make($request->all(), [
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
         if ($validateUser->fails()) {
             return response()->json([
@@ -139,6 +151,21 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+    public function destroy($id){
+        User::destroy($id);
+        try {
+            return response()->json([
+               'success' => true,
+               'message' => 'Success to delete user'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+               'success' => false,
+               'message' => $e->getMessage()
             ], 404);
         }
     }
