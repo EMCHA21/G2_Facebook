@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
@@ -35,4 +36,11 @@ Route::prefix('/post')->group(function () {
     Route::get("/show/{id}", [PostController::class, 'show']);
     Route::put("/update/{id}", [PostController::class, 'update']);
     Route::delete("/delete/{id}", [PostController::class, 'destroy']);
+});
+
+Route::prefix('/comment')->group(function () {
+    Route::get("/list", [CommentController::class, 'index']);    
+    Route::post("/create", [CommentController::class, 'store']);    
+    Route::delete("/delete/{id}", [CommentController::class, 'destroy']);    
+
 });
