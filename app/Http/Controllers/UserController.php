@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use PhpParser\Node\Expr\FuncCall;
 
 class UserController extends Controller
 {
@@ -63,7 +64,19 @@ class UserController extends Controller
     }
     public function index()
     {
-        return User::list();
+        $data = User::list();
+        try {
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'message' => 'Success to get all user'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
     }
 
     public function show($id)
@@ -104,6 +117,55 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
+            ], 404);
+        }
+    }
+    public function uploadProfile(Request $request, $id)
+    {
+        $validateUser = Validator::make($request->all(), [
+            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
+        ]);
+        if ($validateUser->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'validation error',
+                'errors' => $validateUser->errors()
+            ], 422);
+        }
+        $img = $request->image;
+        $ext = $img->getClientOriginalExtension();
+        $imageName = time() . '.' . $ext;
+        $img->move(public_path() . '/uploads/', $imageName);
+
+        try {
+            $user = User::find($id);
+            $user->update([
+                'profile' => $imageName
+            ]);
+            return response()->json([
+                'success' => true,
+                'data' => $user,
+                'message' => 'Profile updated successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 404);
+        }
+    }
+
+    public function destroy($id){
+        User::destroy($id);
+        try {
+            return response()->json([
+               'success' => true,
+               'message' => 'Success to delete user'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+               'success' => false,
+               'message' => $e->getMessage()
             ], 404);
         }
     }
