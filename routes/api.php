@@ -20,15 +20,17 @@ use Illuminate\Support\Facades\Route;
 Route::post("/register", [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
-Route::post('/logout',[UserController::class, 'logout'])->middleware('auth:sanctum');
+Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/profile/change-password', [UserController::class, 'reset_Password'])->middleware('auth:sanctum');
 
 Route::get("/user/list", [UserController::class, 'index']);
 Route::get("/user/show/{id}", [UserController::class, 'show']);
 Route::put("/user/update/{id}", [UserController::class, 'update']);
 
-Route::get("/post/list", [PostController::class, 'index']);
-Route::post("/post/create", [PostController::class, 'store']);
-Route::get("/post/show/{id}", [PostController::class, 'show']);
-Route::put("/post/update/{id}", [PostController::class, 'update']);
-Route::delete("/post/delete/{id}", [PostController::class, 'destroy']);
+Route::prefix('/post')->group(function () {
+    Route::get("/list", [PostController::class, 'index']);
+    Route::post("/create", [PostController::class, 'store']);
+    Route::get("/show/{id}", [PostController::class, 'show']);
+    Route::put("/update/{id}", [PostController::class, 'update']);
+    Route::delete("/delete/{id}", [PostController::class, 'destroy']);
+});
