@@ -5,6 +5,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
+use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,7 +41,9 @@ Route::prefix('/post')->group(function () {
 
 Route::prefix('/comment')->group(function () {
     Route::get("/list", [CommentController::class, 'index']);    
-    Route::post("/create", [CommentController::class, 'store']);    
+    Route::post("/create", [CommentController::class, 'store']); 
+    Route::get("/show/{id}", [CommentController::class, 'show']);
+    Route::put("/update/{id}", [CommentController::class, 'update']);   
     Route::delete("/delete/{id}", [CommentController::class, 'destroy']);    
 
 });

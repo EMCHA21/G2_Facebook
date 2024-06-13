@@ -24,28 +24,40 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $comment = Comment::create([
-            'text'=>request('text'),
-            'auth_id'=>request('auth_id'),
-            'post_id'=>request('post_id')
-        ]);
-        return response()->json(['success'=>true,'data'=>$comment]);
+        $data = Comment::store($request);
+        try{
+            return response()->json(['success'=>true,'data'=>$data]);
+        }catch(Exception $e){
+            return response()->json(['success'=>false,'data'=> $data]);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Comment $post, string $id)
     {
-        //
+        try {
+            $posts = Comment::find($id);
+            return response(["data" => $posts, "message" => "Post has been show successfully", "status" => 200]);
+        } catch (Exception $error) {
+            return response(["data" => $posts, "message" => "Post is not find, It was deleted", "error" => $error], 500);
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, String $id)
     {
-        //
+        $data = Comment::store($request, $id);
+        try{
+            return response()->json(['success'=>true,'data'=> $data]);
+        }catch(Exception $e){
+            return response()->json(['success'=>false,'data'=> $data]);
+        }
+        
+        
     }
 
     /**

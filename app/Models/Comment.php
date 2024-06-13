@@ -25,6 +25,12 @@ class Comment extends Model
     {
         return $this->belongsTo(User::class,'auth_id','id');
     }
+
+    public static function store($request , $id = null){
+        $data = $request->only("text", "auth_id", "post_id");
+        $data = self::updateOrCreate(["id"=>$id], $data);
+        return $data;
+    }
     
     function deleteComment ($id){
         $post = Comment::where('id',$id)->first();
