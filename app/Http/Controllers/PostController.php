@@ -45,7 +45,7 @@ class PostController extends Controller
             'img' => $imagePath,
             'content' => request('content'),
             'auth_id' => request('auth_id'),
-            // 'comment' => request('comment'),
+            'comment' => request('comment'),
             'tags' => request('tags')
         ]);
         return response()->json(['success' => true, 'data' => new PostResource($post)]);
@@ -54,10 +54,11 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post, string $id)
+    public function show(string $id)
     {
+        $posts = Post::find($id);
         try {
-            $posts = Post::find($id);
+            $posts = PostResource::collection($posts);
             return response(["data" => $posts, "message" => "Post has been show successfully", "status" => 200]);
         } catch (Exception $error) {
             return response(["data" => $posts, "message" => "Post is not find, It was deleted", "error" => $error], 500);
@@ -68,21 +69,12 @@ class PostController extends Controller
      */
     public function update(Request $request, String $id)
     {
-        $title = $request->title;
-        $content = $request->content;
-        $auth_id = $request->auth_id;
-        $tags = $request->tags;
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $img = time() . '.' . $image->extension();
-            $image->move(public_path('upload'), $img);
-        }
-        $post = Post::find($request->id);
+        // return $request;
+        $data = Post::store($request, $id);
         try {
-            $post->updatePost($id, $title, $img, $content, $auth_id, $tags);
-            return response()->json(["data" => $post, "message" => "update successfully the post"], 200);
+            return response()->json(["data" => $data, "message" => "update successfully the post"], 200);
         } catch (Exception $error) {
-            return response()->json(["data" => $post, "message" => "failed to update this post"], 500);
+            return response()->json(["data" => $data, "message" => "failed to update this post"], 500);
         }
     }
 
@@ -94,9 +86,9 @@ class PostController extends Controller
         $id = $request->id;
         try {
             $post->deletePost($id);
-            return response()->json(["data" => $post, "message" => "succfully to delete the post"], 200);
+            return response()->json(["success" => true, "message" => "succfully to delete the post"], 200);
         } catch (Exception $erorr) {
-            return response()->json(["data" => $post, "message" => "failed to delete this post"], 500);
+            return response()->json(["success" => false, "message" => "failed to delete this post"], 500);
         }
     }
 }
