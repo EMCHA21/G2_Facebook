@@ -21,6 +21,12 @@ class PostResource extends JsonResource
             'content'=>$this->content,
             'auth_id'=>$this->auth_id,
             'tags'=>$this->tags,
+            'likes'=>$this->likes->transform(function ($like) {
+                $like->user_name = $like->user->name;
+                unset($like->user);
+                return $like;
+            }),
+            'like_count'=>count($this->likes),
         ];
     }
 }

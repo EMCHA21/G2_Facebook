@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Models;
+use App\Models\Like;
 
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,5 +47,9 @@ class Post extends Model
         }catch(Exception $error){
             return $error;
         }
+    }
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
     }
 }

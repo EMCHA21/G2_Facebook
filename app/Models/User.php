@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Like;
 
 class User extends Authenticatable
 {
@@ -54,5 +55,8 @@ class User extends Authenticatable
     public static function list()
     {
         return User::orderBy('id', 'desc')->get();
+    }
+    public function Like(){
+        return $this->hasOne(Like::class);
     }
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,4 +36,10 @@ Route::prefix('/post')->group(function () {
     Route::get("/show/{id}", [PostController::class, 'show']);
     Route::put("/update/{id}", [PostController::class, 'update']);
     Route::delete("/delete/{id}", [PostController::class, 'destroy']);
+});
+
+Route::prefix('/like')->middleware('auth:sanctum')->group(function () {
+    Route::get('/list', [LikeController::class, 'index']);
+    Route::post('/like', [LikeController::class, 'addLike']);
+    Route::delete('/like/{id}', [LikeController::class, 'removeLike']);
 });
