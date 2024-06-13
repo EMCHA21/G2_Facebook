@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('img')->nullable();
             $table->text('content')->nullable();
             $table->integer('auth_id');
+            $table->text('comment');
             $table->string('tags')->nullable();
             $table->timestamps();
         });

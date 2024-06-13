@@ -45,9 +45,10 @@ class PostController extends Controller
             'img' => $imagePath,
             'content' => request('content'),
             'auth_id' => request('auth_id'),
+            // 'comment' => request('comment'),
             'tags' => request('tags')
         ]);
-        return response()->json(['success' => true, 'data' => $post]);
+        return response()->json(['success' => true, 'data' => new PostResource($post)]);
     }
 
     /**
