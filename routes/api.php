@@ -40,13 +40,11 @@ Route::prefix('/post')->group(function () {
     Route::delete("/delete/{id}", [PostController::class, 'destroy']);
 });
 
-<<<<<<< HEAD
 Route::prefix('/like')->middleware('auth:sanctum')->group(function () {
     Route::get('/list', [LikeController::class, 'index']);
     Route::post('/like', [LikeController::class, 'addLike']);
     Route::delete('/like/{id}', [LikeController::class, 'removeLike']);
 });
-=======
 Route::prefix('/comment')->group(function () {
     Route::get("/list", [CommentController::class, 'index']);    
     Route::post("/create", [CommentController::class, 'store']); 
@@ -55,4 +53,3 @@ Route::prefix('/comment')->group(function () {
     Route::delete("/delete/{id}", [CommentController::class, 'destroy']);    
 
 });
->>>>>>> comment
