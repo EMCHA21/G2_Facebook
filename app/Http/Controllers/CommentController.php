@@ -16,7 +16,7 @@ class CommentController extends Controller
     {
         $comment = Comment::all();
         $comment = CommentResource::collection($comment);
-        return response()->json(['success'=>true,'data'=>$comment]);
+        return response()->json(['success' => true, 'data' => $comment]);
     }
 
     /**
@@ -25,10 +25,10 @@ class CommentController extends Controller
     public function store(Request $request)
     {
         $data = Comment::store($request);
-        try{
-            return response()->json(['success'=>true,'data'=>$data]);
-        }catch(Exception $e){
-            return response()->json(['success'=>false,'data'=> $data]);
+        try {
+            return response()->json(['success' => true, 'data' => $data]);
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'data' => $data]);
         }
     }
 
@@ -51,13 +51,11 @@ class CommentController extends Controller
     public function update(Request $request, String $id)
     {
         $data = Comment::store($request, $id);
-        try{
-            return response()->json(['success'=>true,'data'=> $data]);
-        }catch(Exception $e){
-            return response()->json(['success'=>false,'data'=> $data]);
+        try {
+            return response()->json(['success' => true, 'data' => $data, 'message'=> 'Updated successfully'] );
+        } catch (Exception $e) {
+            return response()->json(['success' => false, 'data' => $data]);
         }
-        
-        
     }
 
     /**
