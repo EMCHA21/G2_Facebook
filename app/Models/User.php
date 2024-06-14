@@ -59,4 +59,18 @@ class User extends Authenticatable
     public function Like(){
         return $this->hasOne(Like::class);
     }
+
+    public function friends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
+                    ->withPivot('confirm')
+                    ->withTimestamps();
+    }
+
+    public function inverseFriends()
+    {
+        return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
+                    ->withPivot('confirm')
+                    ->withTimestamps();
+    }
 }

@@ -8,6 +8,8 @@ use App\Http\Middleware\Authenticate;
 use App\Models\Comment;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\FriendshipController;
+use App\Models\SendRequestFriend;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,19 +42,24 @@ Route::prefix('/post')->group(function () {
     Route::delete("/delete/{id}", [PostController::class, 'destroy']);
 });
 
-<<<<<<< HEAD
 Route::prefix('/like')->middleware('auth:sanctum')->group(function () {
     Route::get('/list', [LikeController::class, 'index']);
     Route::post('/like', [LikeController::class, 'addLike']);
     Route::delete('/like/{id}', [LikeController::class, 'removeLike']);
 });
-=======
 Route::prefix('/comment')->group(function () {
-    Route::get("/list", [CommentController::class, 'index']);    
-    Route::post("/create", [CommentController::class, 'store']); 
+    Route::get("/list", [CommentController::class, 'index']);
+    Route::post("/create", [CommentController::class, 'store']);
     Route::get("/show/{id}", [CommentController::class, 'show']);
-    Route::put("/update/{id}", [CommentController::class, 'update']);   
-    Route::delete("/delete/{id}", [CommentController::class, 'destroy']);    
-
+    Route::put("/update/{id}", [CommentController::class, 'update']);
+    Route::delete("/delete/{id}", [CommentController::class, 'destroy']);
 });
->>>>>>> comment
+
+Route::prefix('/friends')->middleware('auth:sanctum')->group(function () {
+    Route::post('/send-friend', [FriendshipController::class, 'addFried']);
+    Route::post('/confirm-friend',[FriendshipController::class,'confirmFriend']);
+    Route::get('/friend-confirmed', [FriendshipController::class,'list_friend_accepted']);
+    Route::get('/list-unaccepted', [FriendshipController::class,'list_friend_unaccepted']);
+    Route::delete('/unaccepted-friend/{id}', [FriendshipController::class,'unaccepted']);
+    Route::delete('/unfriend/{id}', [FriendshipController::class,'unfriend']);
+});
