@@ -51,26 +51,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
+    // all users
     public static function list()
     {
         return User::orderBy('id', 'desc')->get();
     }
-    public function Like(){
+    // relationship user and like
+    public function Like()
+    {
         return $this->hasOne(Like::class);
     }
 
+    // relationship user and friends
     public function friends()
     {
         return $this->belongsToMany(User::class, 'friends', 'user_id', 'friend_id')
-                    ->withPivot('confirm')
-                    ->withTimestamps();
+            ->withPivot('confirm')
+            ->withTimestamps();
     }
 
     public function inverseFriends()
     {
         return $this->belongsToMany(User::class, 'friends', 'friend_id', 'user_id')
-                    ->withPivot('confirm')
-                    ->withTimestamps();
+            ->withPivot('confirm')
+            ->withTimestamps();
     }
 }

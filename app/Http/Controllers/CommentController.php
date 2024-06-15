@@ -35,13 +35,13 @@ class CommentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Comment $post, string $id)
+    public function show(string $id)
     {
         try {
             $posts = Comment::find($id);
-            return response(["data" => $posts, "message" => "Post has been show successfully", "status" => 200]);
+            return response(["success" => true, "data" => $posts, "message" => "Post has been show successfully", "status" => 200]);
         } catch (Exception $error) {
-            return response(["data" => $posts, "message" => "Post is not find, It was deleted", "error" => $error], 500);
+            return response(["success" => false, "data" => $posts, "message" => "Post is not find, It was deleted", "error" => $error], 500);
         }
     }
 
@@ -52,7 +52,7 @@ class CommentController extends Controller
     {
         $data = Comment::store($request, $id);
         try {
-            return response()->json(['success' => true, 'data' => $data, 'message'=> 'Updated successfully'] );
+            return response()->json(['success' => true, 'data' => $data, 'message' => 'Updated successfully']);
         } catch (Exception $e) {
             return response()->json(['success' => false, 'data' => $data]);
         }

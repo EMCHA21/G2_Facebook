@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Friend;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class FriendshipController extends Controller
 {
+    //add friend
     public function addFried(Request $request)
     {
         $request->validate([
@@ -46,6 +48,7 @@ class FriendshipController extends Controller
 
         return response()->json(['friends' => $list_friend]);
     }
+    // list friends that unaccept
     public function list_friend_unaccepted()
     {
         $friends = Friend::all();
@@ -58,7 +61,7 @@ class FriendshipController extends Controller
 
         return response()->json(['friends' => $list_friend]);
     }
-    
+
     //confirm friend
     public function confirmFriend(Request $request)
     {
@@ -67,7 +70,7 @@ class FriendshipController extends Controller
         ]);
 
         $user_id = Auth::id();
-        
+
         // Find the friend request
         $friendRequest = Friend::where('user_id', $request->friend_id)
             ->where('friend_id', $user_id)
@@ -84,13 +87,18 @@ class FriendshipController extends Controller
 
         return response()->json(['message' => 'Friend request confirmed successfully.']);
     }
-    
-    public function unaccepted($id){
+
+    // unacceptable friend request
+    public function unaccepted($id)
+    {
         $friend = Friend::destroy($id);
-       return response()->json(['data' => $friend, 'message' => 'Friend unconfirmed successfully.']);
+        return response()->json(['data' => $friend, 'message' => 'Friend unconfirmed successfully.']);
     }
-    public function unfriend($id){
+
+    // unfriend friend
+    public function unfriend($id)
+    {
         $friend = Friend::destroy($id);
-       return response()->json(['data' => $friend, 'message' => 'Friend unfriend successfully.']);
+        return response()->json(['data' => $friend, 'message' => 'Friend unfriend successfully.']);
     }
 }

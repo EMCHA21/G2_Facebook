@@ -7,10 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
-use PhpParser\Node\Expr\FuncCall;
 
 class UserController extends Controller
 {
+    /**
+     * find me.
+     */
     public function me(Request $request): JsonResponse
     {
         return response()->json([
@@ -18,42 +20,9 @@ class UserController extends Controller
             'data'  => $request->user(),
         ]);
     }
-
-    public function reset_Password(Request $request)
-    {
-        $validateUser = Validator::make(
-            $request->all(),
-            [
-                'old_password' => 'required',
-                'password' => 'required|min:6|max:100'
-            ]
-        );
-        $user = $request->user();
-        return $user;
-        if ($validateUser->fails()) {
-            return response()->json([
-                'success' => false,
-                'message' => 'validation error',
-                'errors' => $validateUser->errors()
-            ], 422);
-        };
-
-        if (Hash::check($request->old_password, $user->password)) {
-            $user->update([
-                'password' => Hash::make($request->password)
-            ]);
-            return response()->json([
-                'success' => true,
-                'message' => 'Password updated successfully'
-            ], 200);
-        } else {
-            return response()->json([
-                'success' => false,
-                'message' => 'Old password is not correct'
-            ], 400);
-        }
-    }
-
+    /**
+     * Log out .
+     */
     public function logout(Request $request)
     {
         // return $request;
@@ -62,6 +31,9 @@ class UserController extends Controller
             'message' => 'Successfully logged out'
         ], 200);
     }
+    /**
+     * Get all resource from storage.
+     */
     public function index()
     {
         $data = User::list();
@@ -78,7 +50,9 @@ class UserController extends Controller
             ], 404);
         }
     }
-
+    /**
+     * Get the specified resource from storage.
+     */
     public function show($id)
     {
         $data = User::find($id);
@@ -95,7 +69,9 @@ class UserController extends Controller
             ], 404);
         }
     }
-
+    /**
+     * upate infor of user like name eamil or password.
+     */
     public function update(Request $request, $id)
     {
         $data = User::find($id);
@@ -120,6 +96,9 @@ class UserController extends Controller
             ], 404);
         }
     }
+    /**
+     * Update profile image of user.
+     */
     public function uploadProfile(Request $request, $id)
     {
         $validateUser = Validator::make($request->all(), [
@@ -153,7 +132,9 @@ class UserController extends Controller
             ], 404);
         }
     }
-
+    /**
+     * Remove the specified resource from storage.
+     */
     public function destroy($id)
     {
         User::destroy($id);

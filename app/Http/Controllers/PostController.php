@@ -58,9 +58,9 @@ class PostController extends Controller
     {
         $posts = Post::find($id);
         try {
-            $posts = PostResource::collection($posts);
-            return response(["data" => $posts, "message" => "Post has been show successfully", "status" => 200]);
-        } catch (Exception $error) {
+            $posts = new PostResource($posts);
+            return response(["success" => true, "data" => $posts, "message" => "Post has been show successfully", "status" => 200]);
+        } catch (\Exception $error) {
             return response(["data" => $posts, "message" => "Post is not find, It was deleted", "error" => $error], 500);
         }
     }
@@ -81,11 +81,10 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request, Post $post)
+    public function destroy($id)
     {
-        $id = $request->id;
         try {
-            $post->deletePost($id);
+            Post::destroy($id);
             return response()->json(["success" => true, "message" => "succfully to delete the post"], 200);
         } catch (Exception $erorr) {
             return response()->json(["success" => false, "message" => "failed to delete this post"], 500);

@@ -1,11 +1,16 @@
 <?php
+
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use App\Models\Like;
 use Illuminate\Support\Facades\Auth;
 
 class LikeController extends Controller
 {
+    /**
+     * add like or un like.
+     */
     public function addLike(Request $request)
     {
         $request->validate([
@@ -22,10 +27,10 @@ class LikeController extends Controller
         ]);
         return response("Like");
     }
+    // get all likes
     public function index()
     {
         $likes = Like::all();
         return response()->json(['likes' => $likes]);
     }
-    
 }

@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
             $this->call(DefaultUsersSeeder::class);
         }
         Model::reguard();
+        $this->call(PostSeeder::class);
+        $this->call(CommentSeeder::class);
+        $this->call(LikeSeeder::class);
+        $this->call(FriendSeeder::class);
     }
 
     private function isLocal(): bool
