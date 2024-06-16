@@ -120,7 +120,7 @@ class UserController extends Controller
             ], 404);
         }
     }
-    public function uploadProfile(Request $request, $id)
+    public function uploadProfile(Request $request)
     {
         $validateUser = Validator::make($request->all(), [
             'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048'
@@ -137,7 +137,7 @@ class UserController extends Controller
         $imageName = time() . '.' . $ext;
         $img->move(public_path() . '/uploads/', $imageName);
         try {
-            $user = User::find($id);
+            $user = $request->user()->id;
             $user->update([
                 'profile' => $imageName
             ]);

@@ -27,9 +27,11 @@ Route::prefix('/user')->group(function () {
     Route::get("/list", [UserController::class, 'index']);
     Route::get("/show/{id}", [UserController::class, 'show']);
     Route::put("/update/{id}", [UserController::class, 'update']);
-    Route::post("/update/profile/{id}", [UserController::class, 'uploadProfile']);
+    Route::post("/update/profile", [UserController::class, 'uploadProfile']);
     Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::delete("/delete/{id}", [UserController::class, 'destroy']);
+    Route::post("/forgot/password", [AuthController::class,'forgotPassword']);
+    Route::post("/reset/password", [AuthController::class,'resetPassword']);
 });
 
 Route::prefix('/post')->group(function () {
