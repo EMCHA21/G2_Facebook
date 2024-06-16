@@ -11,7 +11,12 @@ use App\Models\User;
 class UserController extends Controller
 {
     /**
-     * find me.
+     * @OA\Get(
+     *     path="/api/user/me",
+     *     summary="Get logged-in user details",
+     *     @OA\Response(response="200", description="Success"),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function me(Request $request): JsonResponse
     {
@@ -20,19 +25,20 @@ class UserController extends Controller
             'data'  => $request->user(),
         ]);
     }
-    /**
-     * Log out .
-     */
     public function logout(Request $request)
     {
-        // return $request;
         $request->user()->currentAccessToken()->delete();
         return response()->json([
             'message' => 'Successfully logged out'
         ], 200);
     }
     /**
-     * Get all resource from storage.
+     * @OA\Get(
+     *     path="/api/user/list",
+     *     summary="Get logged-in user details",
+     *     @OA\Response(response="200", description="Success"),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function index()
     {

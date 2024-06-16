@@ -11,7 +11,12 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/post/list",
+     *     summary="get all posts",
+     *     @OA\Response(response="200", description="Success"),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function index()
     {
@@ -20,9 +25,6 @@ class PostController extends Controller
         return response()->json(['success' => true, 'data' => $post]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -50,10 +52,6 @@ class PostController extends Controller
         ]);
         return response()->json(['success' => true, 'data' => new PostResource($post)]);
     }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
         $posts = Post::find($id);
@@ -64,12 +62,9 @@ class PostController extends Controller
             return response(["data" => $posts, "message" => "Post is not find, It was deleted", "error" => $error], 500);
         }
     }
-    /**
-     * Update the specified resource in storage.
-     */
+
     public function update(Request $request, String $id)
     {
-        // return $request;
         $data = Post::store($request, $id);
         try {
             return response()->json(["data" => $data, "message" => "update successfully the post"], 200);
@@ -78,9 +73,6 @@ class PostController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
         try {

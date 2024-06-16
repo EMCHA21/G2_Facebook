@@ -97,7 +97,7 @@ class FriendshipController extends Controller
 
     // unfriend friend
     public function unfriend($id)
-    {
+    {   
         $friend = Friend::destroy($id);
         return response()->json(['data' => $friend, 'message' => 'Friend unfriend successfully.']);
     }

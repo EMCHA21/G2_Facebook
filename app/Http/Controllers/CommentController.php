@@ -10,7 +10,12 @@ use Illuminate\Http\Request;
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/comment/list",
+     *     summary="get all comments",
+     *     @OA\Response(response="200", description="Success"),
+     *     security={{"bearerAuth":{}}}
+     * )
      */
     public function index()
     {

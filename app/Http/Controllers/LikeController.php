@@ -27,7 +27,14 @@ class LikeController extends Controller
         ]);
         return response("Like");
     }
-    // get all likes
+    /**
+     * @OA\Get(
+     *     path="/api/like/list",
+     *     summary="get all like",
+     *     @OA\Response(response="200", description="Success"),
+     *     security={{"bearerAuth":{}}}
+     * )
+     */
     public function index()
     {
         $likes = Like::all();
