@@ -23,12 +23,14 @@ Route::prefix('/user')->group(function () {
     Route::post("/register", [AuthController::class, 'register']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::get('/me', [AuthController::class, 'index'])->middleware('auth:sanctum');
-    Route::get("/list", [UserController::class, 'index'])->middleware('auth:sanctum');
-    Route::get("/show/{id}", [UserController::class, 'show'])->middleware('auth:sanctum');
-    Route::put("/update/{id}", [UserController::class, 'update'])->middleware('auth:sanctum');
-    Route::post("/update/profile/{id}", [UserController::class, 'uploadProfile'])->middleware('auth:sanctum');
+    Route::get("/list", [UserController::class, 'index']);
+    Route::get("/show/{id}", [UserController::class, 'show']);
+    Route::put("/update/{id}", [UserController::class, 'update']);
+    Route::post("/update/profile", [UserController::class, 'uploadProfile']);
     Route::post('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
-    Route::delete("/delete/{id}", [UserController::class, 'destroy'])->middleware('auth:sanctum');
+    Route::delete("/delete/{id}", [UserController::class, 'destroy']);
+    Route::post("/forgot/password", [AuthController::class, 'forgotPassword']);
+    Route::post("/reset/password", [AuthController::class, 'resetPassword']);
 });
 
 Route::prefix('/post')->middleware('auth:sanctum')->group(function () {
